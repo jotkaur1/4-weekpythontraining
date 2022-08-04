@@ -1,10 +1,26 @@
+ 
 from tkinter import *
+from mysql import connector
+
+
 ab=Tk()
 ab.title("registraton form")
 ab.geometry('500x500')
 ab.configure(background="grey")
 label=Label(ab,text="REGISTRATION FORM",width=30,fg="black",bg="grey",font="bold").place(x=100,y=60)
 
+def database():
+    conn=connector.connect(
+        user='root',
+        password='root',
+        host='127.0.0.1',
+        port='3306',
+        database='registration')
+    mycursor=conn.cursor()
+    mycursor.execute("insert into registrationform values(%s,%s,%s,%s,%s,%s)",
+        (entry1.get(),entry2.get(),entry3.get(),entry4.get(),c.get(),var.get()))
+    
+    conn.commit()
 a=Label(ab,text="SR.NO.")
 a.place(x=80,y=130)
 entry1=Entry(ab)
@@ -34,6 +50,8 @@ e.place(x=80, y=380)
 var=IntVar()
 Radiobutton(ab,text="Male",padx=5,variable=var,value=1).place(x=200,y=380)
 Radiobutton(ab,text="Female",padx=20,variable=var,value=2).place(x=270,y=380)
-b1=Button(ab,text="SUBMIT",fg="white",bg="black",width=20)
+b1=Button(ab,text="SUBMIT",fg="white",bg="black",width=20,command=database)
 b1.place(x=180,y=430)
 ab.mainloop()
+
+
